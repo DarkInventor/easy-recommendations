@@ -2,21 +2,23 @@
 
 import { useState, useEffect } from 'react'
 import { templates, Template } from '../data/templates'
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, Loader, Layout, Columns, Box, ArrowRight, Play } from 'lucide-react'
+import { Search, Loader, Layout, Columns, Box, ArrowRight } from 'lucide-react'
+import ProofSection from './ProofSection'
+import ShimmerButton from "@/components/ui/shimmer-button"
+import PulsatingButton from "@/components/ui/pulsating-button"
+import Image from 'next/image'
 
 export default function TemplateRecommender() {
   const [searchTerm, setSearchTerm] = useState('')
   const [recommendations, setRecommendations] = useState<Template[]>([])
   const [isSearching, setIsSearching] = useState(false)
   const [activeTab, setActiveTab] = useState<'all' | 'templates' | 'sections'>('all')
-  
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [previewTemplate, setPreviewTemplate] = useState<Template | null>(null)
 
@@ -79,7 +81,7 @@ export default function TemplateRecommender() {
         .filter(t => !finalRecommendations.some(r => r.name === t.name))
         .sort(() => 0.5 - Math.random())
         .slice(0, remainingCount);
-      // @ts-expect-error ignore this line please
+      // @ts-expect-error ignore this please
       finalRecommendations = [...finalRecommendations, ...randomTemplates];
     }
 
@@ -95,28 +97,37 @@ export default function TemplateRecommender() {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="max-w-6xl mx-auto px-4 py-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
         <motion.div
           className="text-center mb-12"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-5xl font-extrabold mb-4 text-gray-900">
+          <div className="flex justify-center mb-6">
+            <Image
+              src="https://pub-0cd6f9d4131f4f79ac40219248ae64db.r2.dev/logo.svg"
+              alt="Easy UI Logo"
+              width={40}
+              height={40}
+              className="h-20 w-20"
+            />
+          </div>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4 text-gray-900">
             Discover Your Perfect UI
           </h1>
-          <p className="text-xl text-gray-600 mb-8">
-            Find the ideal template or section to kickstart your next project
+          <p className="text-lg sm:text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            Find the ideal template or section to <span className='bg-black text-white leading-7 tracking-tight px-3 py-1 rounded-full font-normal text-[20px]'>kickstart</span> your next project
           </p>
           <div className="max-w-2xl mx-auto">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <Input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="What kind of UI are you looking for? (e.g., modern landing page, blog, SaaS dashboard)"
-                className="pl-10 pr-4 py-3 w-full rounded-[0.75rem] border-2 border-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition duration-300 text-lg"
+                className="pl-10 pr-4 py-3 w-full rounded-full border-2 border-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition duration-300 text-base sm:text-lg"
                 aria-label="Search for UI templates and sections"
               />
             </div>
@@ -170,10 +181,10 @@ export default function TemplateRecommender() {
               transition={{ duration: 0.5 }}
               className="mt-8"
             >
-              <h2 className="text-3xl font-bold mb-6 text-gray-800">
+              <h2 className="text-3xl font-bold mb-6 text-gray-800 flex justify-center">
                 {searchTerm ? 'Tailored Recommendations' : 'Featured Templates and Sections'}
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {recommendations.map((template, index) => (
                   <motion.div
                     key={template.name}
@@ -181,8 +192,8 @@ export default function TemplateRecommender() {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                   >
-                    <Card className="h-full flex flex-col hover:shadow-lg transition-shadow duration-300 rounded-lg border border-gray-200">
-                      <CardHeader className="pb-2">
+                    <Card className="h-full flex flex-col hover:shadow-lg transition-shadow duration-300 rounded-xl border border-gray-200 overflow-hidden">
+                      <CardHeader className="pb-2 bg-gradient-to-r from-blue-50 to-indigo-50">
                         <CardTitle className="flex justify-between items-center">
                           <span className="text-xl font-bold text-gray-800">{template.name}</span>
                           <Badge variant={template.type === 'template' ? 'default' : 'secondary'} className="text-xs rounded-full px-2 py-1">
@@ -194,27 +205,22 @@ export default function TemplateRecommender() {
                         <p className="text-sm text-gray-600">{template.description}</p>
                       </CardContent>
                       <CardFooter className="pt-4 border-t border-gray-100 flex justify-between">
-                        <a
+                        <ShimmerButton
+                        // @ts-expect-error ignore this please
                           href={template.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-full text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300"
+                          className="inline-flex items-center px-4 py-2 text-sm font-medium rounded-full text-white"
                         >
                           Explore {template.type === 'template' ? 'Template' : 'Section'}
                           <ArrowRight className="ml-2 w-4 h-4" />
-                        </a>
+                        </ShimmerButton>
                         {template.type === 'template' && (
                           <Dialog>
                             <DialogTrigger asChild>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="ml-2"
-                                onClick={() => handlePreview(template)}
-                              >
-                                <Play className="w-4 h-4 mr-2" />
+                              <PulsatingButton onClick={() => handlePreview(template)}>
                                 Preview
-                              </Button>
+                              </PulsatingButton>
                             </DialogTrigger>
                             <DialogContent className="max-w-4xl w-11/12">
                               <DialogHeader>
@@ -245,6 +251,9 @@ export default function TemplateRecommender() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Proof Section */}
+        <ProofSection />
       </div>
     </div>
   )

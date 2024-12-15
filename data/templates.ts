@@ -103,7 +103,7 @@ export const templates: Template[] = [
     url: "https://premium.easyui.pro/docs/ez-indigo",
     type: "template",
     description: "A beautiful yet effective template for your project. This Landing Page Template is designed to be practical and easy to use, featuring a clean design and animations that are simple to implement. It's built with the latest technologies to ensure a modern look and feel. This Landingpage is built with the latest tech stack, offering a sleek, modern design that's easy to use and configure.",
-    videoUrl: "https://pub-0cd6f9d4131f4f79ac40219248ae64db.r2.dev/easy-indigo.mp4"
+    videoUrl: "https://pub-0cd6f9d4131f4f79ac40219248ae64db.r2.dev/ez-indigo.mp4"
   },
   {
     name: "Premium",
