@@ -96,9 +96,9 @@ export default function TemplateRecommender() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-transparent">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
-        <motion.div
+        {/* <motion.div
           className="text-center mb-12"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -132,7 +132,87 @@ export default function TemplateRecommender() {
               />
             </div>
           </div>
+        </motion.div> */}
+        <motion.div
+      className="relative overflow-hidden mb-12 py-20 rounded-[0.75rem]"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-600 opacity-10"></div>
+      <motion.div
+        className="absolute -top-16 -left-16 w-64 h-64 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"
+        animate={{
+          scale: [1, 1.1, 1],
+          rotate: [0, 90, 0],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          repeatType: "reverse"
+        }}
+      ></motion.div>
+      <motion.div
+        className="absolute -bottom-16 -right-16 w-64 h-64 bg-indigo-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"
+        animate={{
+          scale: [1, 1.2, 1],
+          rotate: [0, -90, 0],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          repeatType: "reverse"
+        }}
+      ></motion.div>
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <Image
+            src="https://pub-0cd6f9d4131f4f79ac40219248ae64db.r2.dev/logo.svg"
+            alt="Easy UI Logo"
+            width={80}
+            height={80}
+            className="mx-auto mb-6"
+          />
         </motion.div>
+        <motion.h1
+          className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight mb-4 text-gray-800 bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600"
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          Discover Your Perfect UI
+        </motion.h1>
+        <motion.p
+          className="text-xl sm:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto"
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+        >
+          Find the ideal template or section to{' '}
+          <span className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-1 rounded-full font-semibold">
+            kickstart
+          </span>{' '}
+          your next project
+        </motion.p>
+      </div>
+    </motion.div>
+    <div className="max-w-2xl mx-auto pb-7">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="What kind of UI are you looking for? (e.g., modern landing page, blog, SaaS dashboard)"
+                className="pl-10 pr-4 py-3 w-full rounded-full border-2 border-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition duration-300 text-base sm:text-lg"
+                aria-label="Search for UI templates and sections"
+              />
+            </div>
+          </div>
 
         <motion.div 
           className="mb-8"
@@ -205,16 +285,17 @@ export default function TemplateRecommender() {
                         <p className="text-sm text-gray-600">{template.description}</p>
                       </CardContent>
                       <CardFooter className="pt-4 border-t border-gray-100 flex justify-between">
-                        <ShimmerButton
-                        // @ts-expect-error ignore this please
+                        <a
+                      
                           href={template.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center px-4 py-2 text-sm font-medium rounded-full text-white"
+                         
                         >
-                          Explore {template.type === 'template' ? 'Template' : 'Section'}
+                        <ShimmerButton  className="inline-flex items-center px-4 py-2 text-sm font-medium rounded-full text-white">   Explore {template.type === 'template' ? 'Template' : 'Section'}
                           <ArrowRight className="ml-2 w-4 h-4" />
                         </ShimmerButton>
+                        </a>
                         {template.type === 'template' && (
                           <Dialog>
                             <DialogTrigger asChild>
@@ -224,7 +305,7 @@ export default function TemplateRecommender() {
                             </DialogTrigger>
                             <DialogContent className="max-w-4xl w-11/12">
                               <DialogHeader>
-                                <DialogTitle>{template.name} Preview</DialogTitle>
+                                <DialogTitle className='text-2xl'>{template.name} Preview</DialogTitle>
                                 <DialogDescription>
                                   Template video preview
                                 </DialogDescription>
@@ -258,4 +339,7 @@ export default function TemplateRecommender() {
     </div>
   )
 }
+
+
+
 

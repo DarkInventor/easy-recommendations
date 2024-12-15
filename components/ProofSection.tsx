@@ -421,7 +421,7 @@ Get Easy UI Premium Now
       </div>
 
       {/* CTA Button */}
-    
+   
     </div>
   )
 }
